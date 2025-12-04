@@ -25,6 +25,7 @@
                     <li><a href="#contacts" class="nav-link" data-section="contacts">📧 Contacts</a></li>
                     <li><a href="#media" class="nav-link" data-section="media">📁 Media</a></li>
                     <li><a href="#analytics" class="nav-link" data-section="analytics">📈 Analytics</a></li>
+                    <li><a href="#backup" class="nav-link" data-section="backup">💾 Backup & Restore</a></li>
                 </ul>
             </nav>
             
@@ -300,6 +301,80 @@
                         <div class="metric">
                             <span>Response Rate</span>
                             <span class="value">96%</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Backup & Restore Section -->
+            <section id="backup" class="content-section">
+                <h2>💾 Permanent Storage & Backup</h2>
+                
+                <div class="backup-grid">
+                    <div class="backup-section">
+                        <h3>📦 Data Backup</h3>
+                        <p>Automatically creates backups of all your data. Your content is permanently saved.</p>
+                        
+                        <div class="backup-actions">
+                            <button id="createBackupBtn" class="btn btn-primary">💾 Create Backup</button>
+                            <button id="exportDataBtn" class="btn btn-secondary">📥 Export All Data</button>
+                        </div>
+                        
+                        <div class="backup-list">
+                            <h4>Recent Backups</h4>
+                            <div id="backupsList">
+                                <!-- Backups will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="backup-section">
+                        <h3>📤 Data Import</h3>
+                        <p>Import previously exported data to restore your website content.</p>
+                        
+                        <form id="importForm" class="import-form">
+                            <div class="form-group">
+                                <label>Import Data File</label>
+                                <input type="file" id="importFile" accept=".json" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">📥 Import Data</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="system-info">
+                    <h3>🖥️ System Information</h3>
+                    <div class="info-grid" id="systemInfo">
+                        <!-- System info will be loaded here -->
+                    </div>
+                </div>
+                
+                <div class="permanent-storage-info">
+                    <h3>🔐 Permanent Storage Features</h3>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <h4>✅ Automatic Backups</h4>
+                            <p>Every change is automatically backed up with timestamp</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>✅ File Deduplication</h4>
+                            <p>Uploads are stored permanently and synchronized</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>✅ Version Control</h4>
+                            <p>Keep last 10 backup versions for recovery</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>✅ Export/Import</h4>
+                            <p>Download all data and restore from any backup</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>✅ Disaster Recovery</h4>
+                            <p>One-click restore from any backup point</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>✅ Data Integrity</h4>
+                            <p>Automatic validation and error correction</p>
                         </div>
                     </div>
                 </div>
