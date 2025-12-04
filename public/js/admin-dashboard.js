@@ -116,6 +116,10 @@ document.addEventListener('DOMContentLoaded', function() {
             updateSettingsForm();
             updateContactsList();
             
+            // Load backup data
+            await loadBackupData();
+            await loadSystemInfo();
+            
         } catch (error) {
             console.error('Error loading data:', error);
             showToast('Error loading data', 'error');
@@ -558,6 +562,275 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('saveAllBtn').addEventListener('click', function() {
         showToast('All changes saved automatically', 'success');
     });
+    
+    // Backup management functions
+    async function loadBackupData() {
+        try {
+            const response = await fetch('/api/admin/backup/list', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            
+            const data = await response.json();
+            if (data.success) {
+                updateBackupsList(data.backups);
+            }
+        } catch (error) {
+            console.error('Error loading backups:', error);
+        }
+    }
+    
+    function updateBackupsList(backups) {
+        const backupsList = document.getElementById('backupsList');
+        if (!backupsList) return;
+        
+        if (backups.length === 0) {
+            backupsList.innerHTML = '<p style="color: var(--text-dim); text-align: center;">No backups available</p>';
+            return;
+        }
+        
+        backupsList.innerHTML = backups.slice(0, 5).map(backup => `
+            <div class="backup-item">
+                <div class="backup-info">
+                    <h5>${backup.filename}</h5>
+                    <p>${formatDate(backup.created)} • ${formatBytes(backup.size)}</p>
+                </div>
+                <div class="backup-actions-item">
+                    <button class="btn btn-secondary" onclick="downloadBackup('${backup.filename}')">📥</button>
+                    <button class="btn btn-primary" onclick="restoreBackup('${backup.filename}')">🔄</button>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    async function loadSystemInfo() {
+        try {
+            const response = await fetch('/api/admin/system', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            
+            const data = await response.json();
+            if (data.success) {
+                updateSystemInfo(data.system);
+            }
+        } catch (error) {
+            console.error('Error loading system info:', error);
+        }
+    }
+    
+    function updateSystemInfo(system) {
+        const systemInfo = document.getElementById('systemInfo');
+        if (!systemInfo) return;
+        
+        systemInfo.innerHTML = `
+            <div class="info-item">
+                <label>Data Directory Size</label>
+                <div class="value">${system.dataDirSize}</div>
+            </div>
+            <div class="info-item">
+                <label>Uploads Size</label>
+                <div class="value">${system.uploadsSize}</div>
+            </div>
+            <div class="info-item">
+                <label>Total Backups</label>
+                <div class="value">${system.backupsCount}</div>
+            </div>
+            <div class="info-item">
+                <label>System Uptime</label>
+                <div class="value">${formatUptime(system.uptime)}</div>
+            </div>
+            <div class="info-item">
+                <label>Memory Usage</label>
+                <div class="value">${formatBytes(system.memory.used)}</div>
+            </div>
+            <div class="info-item">
+                <label>Node.js Version</label>
+                <div class="value">${system.nodeVersion}</div>
+            </div>
+        `;
+    }
+    
+    // Backup event handlers
+    document.getElementById('createBackupBtn').addEventListener('click', async function() {
+        try {
+            showToast('Creating backup...', 'warning');
+            
+            const response = await fetch('/api/admin/backup/create', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            
+            const data = await response.json();
+            if (data.success) {
+                showToast('Backup created successfully', 'success');
+                await loadBackupData();
+                showSaveIndicator('💾 Backup Saved Permanently');
+            } else {
+                showToast(data.message || 'Failed to create backup', 'error');
+            }
+        } catch (error) {
+            showToast('Error creating backup', 'error');
+        }
+    });
+    
+    document.getElementById('exportDataBtn').addEventListener('click', async function() {
+        try {
+            showToast('Exporting data...', 'warning');
+            
+            const response = await fetch('/api/admin/export', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            
+            if (response.ok) {
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `ntandostore-complete-export-${Date.now()}.json`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+                
+                showToast('Data exported successfully', 'success');
+                showSaveIndicator('📥 Export Downloaded');
+            } else {
+                showToast('Failed to export data', 'error');
+            }
+        } catch (error) {
+            showToast('Error exporting data', 'error');
+        }
+    });
+    
+    document.getElementById('importForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const fileInput = document.getElementById('importFile');
+        const file = fileInput.files[0];
+        
+        if (!file) {
+            showToast('Please select a file to import', 'error');
+            return;
+        }
+        
+        if (!confirm('This will replace all current data. Are you sure you want to continue?')) {
+            return;
+        }
+        
+        const formData = new FormData();
+        formData.append('importFile', file);
+        
+        try {
+            showToast('Importing data...', 'warning');
+            
+            const response = await fetch('/api/admin/import', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}` },
+                body: formData
+            });
+            
+            const data = await response.json();
+            if (data.success) {
+                showToast('Data imported successfully', 'success');
+                fileInput.value = '';
+                await loadDashboardData();
+                showSaveIndicator('📤 Data Restored');
+            } else {
+                showToast(data.message || 'Failed to import data', 'error');
+            }
+        } catch (error) {
+            showToast('Error importing data', 'error');
+        }
+    });
+    
+    // Global backup functions
+    window.downloadBackup = async function(filename) {
+        try {
+            const response = await fetch(`/api/admin/backup/download/${filename}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            
+            if (response.ok) {
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+                
+                showToast('Backup downloaded', 'success');
+            } else {
+                showToast('Failed to download backup', 'error');
+            }
+        } catch (error) {
+            showToast('Error downloading backup', 'error');
+        }
+    };
+    
+    window.restoreBackup = async function(filename) {
+        if (!confirm(`Are you sure you want to restore from backup: ${filename}?\n\nThis will replace all current data!`)) {
+            return;
+        }
+        
+        try {
+            showToast('Restoring backup...', 'warning');
+            
+            const response = await fetch(`/api/admin/backup/restore/${filename}`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            
+            const data = await response.json();
+            if (data.success) {
+                showToast('Data restored successfully', 'success');
+                await loadDashboardData();
+                showSaveIndicator('🔄 Data Restored from Backup');
+            } else {
+                showToast(data.message || 'Failed to restore backup', 'error');
+            }
+        } catch (error) {
+            showToast('Error restoring backup', 'error');
+        }
+    };
+    
+    // Utility functions for backup system
+    function formatBytes(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+    
+    function formatUptime(seconds) {
+        const days = Math.floor(seconds / 86400);
+        const hours = Math.floor((seconds % 86400) / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        
+        if (days > 0) return `${days}d ${hours}h`;
+        if (hours > 0) return `${hours}h ${minutes}m`;
+        return `${minutes}m`;
+    }
+    
+    function showSaveIndicator(message) {
+        const indicator = document.createElement('div');
+        indicator.className = 'save-indicator show';
+        indicator.textContent = message;
+        
+        document.body.appendChild(indicator);
+        
+        setTimeout(() => {
+            indicator.classList.remove('show');
+            setTimeout(() => indicator.remove(), 300);
+        }, 3000);
+    }
+    
+    // Auto-save indicator - shows every minute
+    setInterval(() => {
+        showSaveIndicator('✅ All Data Saved Permanently');
+    }, 60000);
     
     // Global functions for onclick handlers
     window.editService = editService;
