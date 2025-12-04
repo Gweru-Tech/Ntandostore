@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - NtandoStore V6</title>
+    <link rel="stylesheet" href="css/admin.css">
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>🚀 NtandoStore V6</h2>
+                <p>Admin Panel</p>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="#dashboard" class="nav-link active" data-section="dashboard">📊 Dashboard</a></li>
+                    <li><a href="#services" class="nav-link" data-section="services">💻 Services</a></li>
+                    <li><a href="#domains" class="nav-link" data-section="domains">🌐 Domains</a></li>
+                    <li><a href="#settings" class="nav-link" data-section="settings">⚙️ Settings</a></li>
+                    <li><a href="#contacts" class="nav-link" data-section="contacts">📧 Contacts</a></li>
+                    <li><a href="#media" class="nav-link" data-section="media">📁 Media</a></li>
+                    <li><a href="#analytics" class="nav-link" data-section="analytics">📈 Analytics</a></li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="logout-btn">🚪 Logout</button>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="content-header">
+                <h1 id="pageTitle">Dashboard</h1>
+                <div class="header-actions">
+                    <button id="saveAllBtn" class="btn btn-primary">💾 Save All</button>
+                    <button id="refreshBtn" class="btn btn-secondary">🔄 Refresh</button>
+                </div>
+            </header>
+            
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="content-section active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">💻</div>
+                        <div class="stat-content">
+                            <h3 id="totalServices">0</h3>
+                            <p>Total Services</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🌐</div>
+                        <div class="stat-content">
+                            <h3 id="totalDomains">0</h3>
+                            <p>Total Domains</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📧</div>
+                        <div class="stat-content">
+                            <h3 id="totalContacts">0</h3>
+                            <p>Total Contacts</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🚀</div>
+                        <div class="stat-content">
+                            <h3>V6.0</h3>
+                            <p>Version</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="recent-activity">
+                    <h2>Recent Contacts</h2>
+                    <div id="recentContacts" class="contact-list">
+                        <!-- Will be populated dynamically -->
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Services Section -->
+            <section id="services" class="content-section">
+                <div class="section-header">
+                    <h2>Services Management</h2>
+                    <button id="addServiceBtn" class="btn btn-primary">➕ Add Service</button>
+                </div>
+                
+                <div id="servicesList" class="editable-list">
+                    <!-- Services will be populated dynamically -->
+                </div>
+                
+                <!-- Service Form Modal -->
+                <div id="serviceModal" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 id="serviceModalTitle">Add Service</h3>
+                            <button class="close-modal">&times;</button>
+                        </div>
+                        <form id="serviceForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Service Name</label>
+                                    <input type="text" id="serviceName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Icon (Emoji)</label>
+                                    <input type="text" id="serviceIcon" placeholder="💻">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea id="serviceDescription" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Features (one per line)</label>
+                                <textarea id="serviceFeatures" placeholder="Feature 1&#10;Feature 2&#10;Feature 3"></textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Save Service</button>
+                                <button type="button" class="btn btn-secondary cancel-modal">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Domains Section -->
+            <section id="domains" class="content-section">
+                <div class="section-header">
+                    <h2>Domains Management</h2>
+                    <button id="addDomainBtn" class="btn btn-primary">➕ Add Domain</button>
+                </div>
+                
+                <div id="domainsList" class="editable-list">
+                    <!-- Domains will be populated dynamically -->
+                </div>
+                
+                <!-- Domain Form Modal -->
+                <div id="domainModal" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 id="domainModalTitle">Add Domain</h3>
+                            <button class="close-modal">&times;</button>
+                        </div>
+                        <form id="domainForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Domain Name</label>
+                                    <input type="text" id="domainName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Price</label>
+                                    <input type="text" id="domainPrice" placeholder="$299" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Status</label>
+                                    <select id="domainStatus">
+                                        <option value="available">Available</option>
+                                        <option value="sold">Sold</option>
+                                        <option value="pending">Pending</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea id="domainDescription" required></textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Save Domain</button>
+                                <button type="button" class="btn btn-secondary cancel-modal">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Settings Section -->
+            <section id="settings" class="content-section">
+                <h2>Website Settings</h2>
+                <form id="settingsForm" class="settings-form">
+                    <div class="settings-grid">
+                        <div class="form-group">
+                            <label>Site Title</label>
+                            <input type="text" id="siteTitle">
+                        </div>
+                        <div class="form-group">
+                            <label>Hero Title</label>
+                            <input type="text" id="heroTitle">
+                        </div>
+                        <div class="form-group">
+                            <label>Hero Subtitle</label>
+                            <textarea id="heroSubtitle"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Primary Color</label>
+                            <input type="color" id="primaryColor">
+                        </div>
+                        <div class="form-group">
+                            <label>Secondary Color</label>
+                            <input type="color" id="secondaryColor">
+                        </div>
+                        <div class="form-group">
+                            <label>Accent Color</label>
+                            <input type="color" id="accentColor">
+                        </div>
+                    </div>
+                    
+                    <div class="media-settings">
+                        <h3>Media Settings</h3>
+                        <div class="upload-section">
+                            <div class="upload-item">
+                                <label>Logo</label>
+                                <input type="file" id="logoUpload" accept="image/*">
+                                <div id="logoPreview" class="preview"></div>
+                            </div>
+                            <div class="upload-item">
+                                <label>Background Image</label>
+                                <input type="file" id="bgUpload" accept="image/*">
+                                <div id="bgPreview" class="preview"></div>
+                            </div>
+                            <div class="upload-item">
+                                <label>Background Music</label>
+                                <input type="file" id="musicUpload" accept="audio/*">
+                                <div id="musicPreview" class="preview"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Save Settings</button>
+                    </div>
+                </form>
+            </section>
+            
+            <!-- Contacts Section -->
+            <section id="contacts" class="content-section">
+                <h2>Contact Submissions</h2>
+                <div id="contactsList" class="contacts-table">
+                    <!-- Contacts will be populated dynamically -->
+                </div>
+            </section>
+            
+            <!-- Media Section -->
+            <section id="media" class="content-section">
+                <h2>Media Library</h2>
+                <div class="media-grid">
+                    <div class="upload-zone">
+                        <h3>Upload New Media</h3>
+                        <div class="drop-zone" id="dropZone">
+                            <p>📁 Drag & drop files here or click to browse</p>
+                            <input type="file" id="fileInput" multiple accept="image/*,audio/*">
+                        </div>
+                    </div>
+                    <div class="media-list" id="mediaList">
+                        <!-- Media files will be listed here -->
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Analytics Section -->
+            <section id="analytics" class="content-section">
+                <h2>Analytics & Reports</h2>
+                <div class="analytics-grid">
+                    <div class="analytics-card">
+                        <h3>📈 Site Performance</h3>
+                        <div class="metric">
+                            <span>Page Load Time</span>
+                            <span class="value">1.2s</span>
+                        </div>
+                        <div class="metric">
+                            <span>Total Page Views</span>
+                            <span class="value">2,847</span>
+                        </div>
+                    </div>
+                    <div class="analytics-card">
+                        <h3>👥 User Engagement</h3>
+                        <div class="metric">
+                            <span>Active Users</span>
+                            <span class="value">142</span>
+                        </div>
+                        <div class="metric">
+                            <span>Bounce Rate</span>
+                            <span class="value">23%</span>
+                        </div>
+                    </div>
+                    <div class="analytics-card">
+                        <h3>📧 Contact Stats</h3>
+                        <div class="metric">
+                            <span>This Month</span>
+                            <span class="value">28</span>
+                        </div>
+                        <div class="metric">
+                            <span>Response Rate</span>
+                            <span class="value">96%</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+    
+    <script src="js/admin-dashboard.js"></script>
+</body>
+</html>

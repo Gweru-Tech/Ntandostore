@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ntandostore V6 - Digital Services Platform 2026</title>
+    <meta name="description" content="Premium domains, web development, hosting, WhatsApp bots, APIs, business emails, and design services">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+    <!-- Floating Background Elements -->
+    <div class="floating-elements" id="floatingElements"></div>
+
+    <!-- Background Music (if configured) -->
+    <audio id="backgroundMusic" loop style="display: none;">
+        <source src="" type="audio/mpeg">
+        <source src="" type="audio/wav">
+        <source src="" type="audio/ogg">
+    </audio>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo" id="siteLogo">🚀 NtandoStore V6</a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#domains">Domains</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="/admin" style="color: var(--accent);">🔐 Admin</a></li>
+            </ul>
+            <button id="musicToggle" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">
+                🎵 Music
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 id="heroTitle">Welcome to the Future 2026</h1>
+            <p id="heroSubtitle">Your complete digital solution provider - from premium domains to cutting-edge web development</p>
+            <div class="cta-buttons">
+                <a href="#services" class="btn btn-primary">
+                    <span>Explore Services</span>
+                    <span>→</span>
+                </a>
+                <a href="#contact" class="btn btn-secondary">
+                    <span>Get Started</span>
+                    <span>✨</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="section">
+        <h2 class="section-title">Our Premium Services</h2>
+        <p class="section-subtitle">Comprehensive digital solutions for your business growth</p>
+        
+        <div class="services-grid" id="servicesGrid">
+            <!-- Services will be dynamically loaded -->
+        </div>
+    </section>
+
+    <!-- Domains Section -->
+    <section id="domains" class="section">
+        <h2 class="section-title">Premium Domains</h2>
+        <p class="section-subtitle">Own a piece of the digital real estate</p>
+        
+        <div class="domains-showcase">
+            <div class="domain-grid" id="domainGrid">
+                <!-- Domains will be dynamically loaded -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="section">
+        <h2 class="section-title">Why Choose NtandoStore V6?</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <span class="service-icon">🔮</span>
+                <h3>Future-Ready Solutions</h3>
+                <p>Built with 2026 technology stack and forward-thinking innovation</p>
+                <ul class="service-features">
+                    <li>AI-Powered Development</li>
+                    <li>Quantum-Ready Infrastructure</li>
+                    <li>Next-Gen Security</li>
+                </ul>
+            </div>
+            <div class="service-card">
+                <span class="service-icon">⚡</span>
+                <h3>Lightning Fast Delivery</h3>
+                <p>Get your projects deployed within hours, not weeks</p>
+                <ul class="service-features">
+                    <li>Automated Workflows</li>
+                    <li>24/7 Development Team</li>
+                    <li>Instant Deployment</li>
+                </ul>
+            </div>
+            <div class="service-card">
+                <span class="service-icon">🛡️</span>
+                <h3>Enterprise Security</h3>
+                <p>Bank-level security for all your digital assets</p>
+                <ul class="service-features">
+                    <li>SSL Certificates</li>
+                    <li>DDoS Protection</li>
+                    <li>Regular Security Audits</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <h2 class="section-title">Start Your Journey</h2>
+        <p class="section-subtitle">Let's discuss how we can transform your digital presence</p>
+        
+        <form id="contactForm" class="contact-form">
+            <div class="form-group">
+                <label for="name">Full Name *</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address *</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="service">Service Interest *</label>
+                <select id="service" name="service" required>
+                    <option value="">Select a service</option>
+                    <option value="domains">Domain Purchase</option>
+                    <option value="web-development">Website Development</option>
+                    <option value="hosting">Web Hosting</option>
+                    <option value="whatsapp-bots">WhatsApp Bots</option>
+                    <option value="apis">API Development</option>
+                    <option value="business-emails">Business Emails</option>
+                    <option value="design">Design Services</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="message">Project Details</label>
+                <textarea id="message" name="message" placeholder="Tell us about your project..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                <span>Send Message</span>
+                <span id="submitSpinner"></span>
+            </button>
+            <div id="formMessage"></div>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#services">Services</a>
+                <a href="#domains">Domains</a>
+                <a href="#contact">Contact</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+            <p>&copy; 2026 NtandoStore V6. All rights reserved. | Built with ❤️ for the future</p>
+            <p>🌐 Serving globally | 🚀 Deployed on Render.com</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
